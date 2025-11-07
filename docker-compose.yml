@@ -1,0 +1,67 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clientsdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  clients-service:
+    build:
+      context: ./clients-service
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: clientsdb
+      DB_USER: postgres
+      DB_PASS: postgres
+      LISTEN_PORT: 8001
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+  db_vendas:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: vendas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./services/vendas/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5436:5432"
+
+  vendas:
+    build: ./services/vendas
+    depends_on:
+      - db_vendas
+      - cotacoes
+    ports:
+      - "8003:8003"
+
+  db_cotacoes:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: cotacoes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./services/cotacoes/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5437:5432"
+
+  cotacoes:
+    build: ./services/cotacoes
+    depends_on:
+      - db_cotacoes
+    ports:
+      - "8004:8004"
