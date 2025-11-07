@@ -71,11 +71,12 @@ Permite:
 ## 🐳 Executando o Projeto
 
 1️⃣ Clone o repositório:
-git clone https://github.com/<seu-usuario>/plataforma-tcc
-cd plataforma-tcc
+git clone https://github.com/<seu-usuario>/plataforma
+cd plataforma
 2️⃣ Dê permissão aos scripts:
 chmod +x test-code.sh run-tests.sh
 3️⃣ Construa e suba todos os containers
 docker compose up --build
 4️⃣ Teste se tudo está funcionando
 ./run-tests.sh
+
