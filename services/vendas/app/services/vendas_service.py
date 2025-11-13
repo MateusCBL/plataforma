@@ -11,7 +11,6 @@ URL_PRODUTOS = "http://produtos:8002"
 URL_COTACOES = "http://cotacoes:8004"
 
 def chamar_api(url):
-    """Função auxiliar para chamadas HTTP simples"""
     try:
         with urllib.request.urlopen(url) as response:
             return json.loads(response.read().decode())
@@ -59,7 +58,6 @@ def adicionar_item(sell_id, product_id, quantity):
 
 
 def efetivar_venda(sell_id, itens):
-    """Efetiva a venda, reduz o estoque e retorna preço total em todas as moedas"""
     total_brl = 0.0
     for i in itens:
         produto = validar_produto(i["product_id"], i["quantity"])
